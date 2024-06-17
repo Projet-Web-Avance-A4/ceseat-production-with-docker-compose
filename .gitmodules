@@ -1,0 +1,27 @@
+[submodule "Developpeur"]
+	path = Developpeur
+	url = ./Developpeur/
+[submodule "Commercial"]
+	path = Commercial
+	url = ./Commercial/
+[submodule "Client"]
+	path = Client
+	url = ./Client/
+[submodule "Livreur"]
+	path = Livreur
+	url = ./Livreur/
+[submodule "Microservices"]
+	path = Microservices
+	url = ./Microservices/
+[submodule "Middleware"]
+	path = Middleware
+	url = ./Middleware/
+[submodule "Restaurateur"]
+	path = Restaurateur
+	url = ./Restaurateur/
+[submodule "Technique"]
+	path = Technique
+	url = ./Technique/
+[submodule "api-gateway"]
+	path = api-gateway
+	url = https://github.com/Projet-Web-Avance-A4/api-gateway.git

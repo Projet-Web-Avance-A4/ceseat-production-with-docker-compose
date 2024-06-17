@@ -4,9 +4,6 @@ Meant to group all ceseat applications (&amp; DBs) and run them inside container
 # How to run
 
 ```bash
-# Create a network, which allows containers to communicate
-# with each other, by using their container name as a hostname
-docker network create [my_network]
 
 # Build prod
 docker compose --env-file ./.env.production.local -f docker-compose.prod.yml build
