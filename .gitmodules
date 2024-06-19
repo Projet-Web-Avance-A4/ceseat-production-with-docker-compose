@@ -25,3 +25,6 @@
 [submodule "api-gateway"]
 	path = api-gateway
 	url = https://github.com/Projet-Web-Avance-A4/api-gateway.git
+[submodule "Backend-MongoDB"]
+	path = Backend-MongoDB
+	url = https://github.com/Projet-Web-Avance-A4/Backend-MongoDB.git

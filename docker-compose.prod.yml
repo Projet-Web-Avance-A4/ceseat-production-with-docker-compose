@@ -1,23 +1,4 @@
 services:
-  commercial-app:
-    container_name: Commercial
-    build:
-      context: ./Commercial
-      dockerfile: prod.Dockerfile
-      args:
-        ENV_VARIABLE: ${ENV_VARIABLE}
-        NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
-    restart: always
-    ports:
-      - 3002:3000
-    networks:
-      commercial_network:
-        aliases:
-          - commercial.prod
-      microservices_network:
-        aliases:
-          - commercial-microservices_network
-
   client-app:
     container_name: Client
     build:
@@ -36,6 +17,25 @@ services:
       microservices_network:
         aliases:
           - client-microservices_network
+
+  commercial-app:
+    container_name: Commercial
+    build:
+      context: ./Commercial
+      dockerfile: prod.Dockerfile
+      args:
+        ENV_VARIABLE: ${ENV_VARIABLE}
+        NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+    restart: always
+    ports:
+      - 3002:3000
+    networks:
+      commercial_network:
+        aliases:
+          - commercial.prod
+      microservices_network:
+        aliases:
+          - commercial-microservices_network
 
   developpeur-app:
     container_name: Developpeur
@@ -85,7 +85,7 @@ services:
         NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
     restart: always
     ports:
-      - 5000:3000
+      - 5000:5000
     networks:
       self_microservices_network:
         aliases:
@@ -93,6 +93,11 @@ services:
       microservices_network:
         aliases:
           - microservices-microservices_network
+      apigateway_network:
+        aliases:
+          - apigateway.prod
+    depends_on:
+      - ceseat-bddr
 
   middleware-app:
     container_name: Middleware
@@ -112,8 +117,6 @@ services:
       microservices_network:
         aliases:
           - middleware-microservices_network
-    depends_on:
-      - ceseat-bddr
 
   restaurateur-app:
     container_name: Restaurateur
@@ -171,6 +174,8 @@ services:
       microservices_network:
         aliases:
           - apigateway-microservices_network
+    depends_on:
+      - microservices-app
 
   ceseat-bddr:
     container_name: MySQL-ceseat
