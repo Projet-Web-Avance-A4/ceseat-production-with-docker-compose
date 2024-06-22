@@ -1,0 +1,202 @@
+services:
+  client-app:
+    container_name: Client
+    build:
+      context: ./Client
+      dockerfile: prod.Dockerfile
+      args:
+        ENV_VARIABLE: ${ENV_VARIABLE}
+        NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+    restart: always
+    ports:
+      - 3001:3000
+    networks:
+      client_network:
+        aliases:
+          - client.prod
+      microservices_network:
+        aliases:
+          - client-microservices_network
+
+  commercial-app:
+    container_name: Commercial
+    build:
+      context: ./Commercial
+      dockerfile: prod.Dockerfile
+      args:
+        ENV_VARIABLE: ${ENV_VARIABLE}
+        NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+    restart: always
+    ports:
+      - 3002:3000
+    networks:
+      commercial_network:
+        aliases:
+          - commercial.prod
+      microservices_network:
+        aliases:
+          - commercial-microservices_network
+
+  developpeur-app:
+    container_name: Developpeur
+    build:
+      context: ./Developpeur
+      dockerfile: prod.Dockerfile
+      args:
+        ENV_VARIABLE: ${ENV_VARIABLE}
+        NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+    restart: always
+    ports:
+      - 3003:3000
+    networks:
+      developpeur_network:
+        aliases:
+          - developpeur.prod
+      microservices_network:
+        aliases:
+          - developpeur-microservices_network
+
+  livreur-app:
+    container_name: Livreur
+    build:
+      context: ./Livreur
+      dockerfile: prod.Dockerfile
+      args:
+        ENV_VARIABLE: ${ENV_VARIABLE}
+        NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+    restart: always
+    ports:
+      - 3004:3000
+    networks:
+      livreur_network:
+        aliases:
+          - livreur.prod
+      microservices_network:
+        aliases:
+          - livreur-microservices_network
+
+  microservices-app:
+    container_name: Microservices
+    build:
+      context: ./Microservices
+      dockerfile: prod.Dockerfile
+      args:
+        ENV_VARIABLE: ${ENV_VARIABLE}
+        NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+    restart: always
+    ports:
+      - 5000:5000
+    networks:
+      self_microservices_network:
+        aliases:
+          - microservices.prod
+      microservices_network:
+        aliases:
+          - microservices-microservices_network
+      apigateway_network:
+        aliases:
+          - apigateway.prod
+    depends_on:
+      - ceseat-bddr
+
+  middleware-app:
+    container_name: Middleware
+    build:
+      context: ./Middleware
+      dockerfile: prod.Dockerfile
+      args:
+        ENV_VARIABLE: ${ENV_VARIABLE}
+        NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+    restart: always
+    ports:
+      - 3005:3000
+    networks:
+      middleware_network:
+        aliases:
+          - middleware.prod
+      microservices_network:
+        aliases:
+          - middleware-microservices_network
+
+  restaurateur-app:
+    container_name: Restaurateur
+    build:
+      context: ./Restaurateur
+      dockerfile: prod.Dockerfile
+      args:
+        ENV_VARIABLE: ${ENV_VARIABLE}
+        NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+    restart: always
+    ports:
+      - 3006:3000
+    networks:
+      restaurateur_network:
+        aliases:
+          - restaurateur.prod
+      microservices_network:
+        aliases:
+          - restaurateur-microservices_network
+
+  technique-app:
+    container_name: Technique
+    build:
+      context: ./Technique
+      dockerfile: prod.Dockerfile
+      args:
+        ENV_VARIABLE: ${ENV_VARIABLE}
+        NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+    restart: always
+    ports:
+      - 3007:3000
+    networks:
+      technique_network:
+        aliases:
+          - technique.prod
+      microservices_network:
+        aliases:
+          - technique-microservices_network
+
+  api-gateway-app:
+    container_name: API-Gateway
+    build:
+      context: ./api-gateway
+      dockerfile: prod.Dockerfile
+      args:
+        ENV_VARIABLE: ${ENV_VARIABLE}
+        NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+    restart: always
+    ports:
+      - 4000:4000
+    networks:
+      apigateway_network:
+        aliases:
+          - apigateway.prod
+      microservices_network:
+        aliases:
+          - apigateway-microservices_network
+    depends_on:
+      - microservices-app
+
+  ceseat-bddr:
+    container_name: MySQL-ceseat
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'ceseat'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - 3306:3306
+    networks:
+      - self_microservices_network
+
+networks:
+  commercial_network:
+  client_network:
+  developpeur_network:
+  livreur_network:
+  microservices_network:
+  middleware_network:
+  restaurateur_network:
+  technique_network:
+  apigateway_network:
+  self_microservices_network:
