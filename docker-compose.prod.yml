@@ -75,8 +75,8 @@ services:
         aliases:
           - livreur-microservices_network
 
-  microservices-app:
-    container_name: Microservices
+  backendmysql-app:
+    container_name: Backend-MySQL
     build:
       context: ./Microservices
       dockerfile: prod.Dockerfile
@@ -89,10 +89,10 @@ services:
     networks:
       self_microservices_network:
         aliases:
-          - microservices.prod
+          - backendmysql.prod
       microservices_network:
         aliases:
-          - microservices-microservices_network
+          - backendmysql_network
       apigateway_network:
         aliases:
           - apigateway.prod
@@ -174,8 +174,11 @@ services:
       microservices_network:
         aliases:
           - apigateway-microservices_network
+      backendmongodb_network:
+        aliases:
+          - backendmongodb_network
     depends_on:
-      - microservices-app
+      - backendmysql-app
 
   ceseat-bddr:
     container_name: MySQL-ceseat
@@ -189,6 +192,24 @@ services:
     networks:
       - self_microservices_network
 
+  mongodb-bdd:
+    container_name: Backend-MongoBD
+    build:
+      context: ./Backend-MongoDB
+      dockerfile: prod.Dockerfile
+    restart: always
+    ports:
+      - 5001:5001
+    networks:
+      apigateway_network:
+        aliases:
+          - apigateway.prod
+      backendmongodb_network:
+        aliases:
+          - backendmongodb_network
+    depends_on:
+      - backendmysql-app
+
 networks:
   commercial_network:
   client_network:
@@ -200,3 +221,4 @@ networks:
   technique_network:
   apigateway_network:
   self_microservices_network:
+  backendmongodb_network:
